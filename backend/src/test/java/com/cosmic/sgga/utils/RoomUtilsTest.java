@@ -2,11 +2,18 @@ package com.cosmic.sgga.utils;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import com.cosmic.sgga.entities.Room;
+import com.cosmic.sgga.repositories.RoomRepository;
+
 import java.util.*;
 
 @SpringBootTest
 public class RoomUtilsTest {
+    @Autowired
+    private RoomRepository roomRepository;
 
     @DisplayName("랜덤코드 생성길이 테스트")
     @Test
@@ -32,5 +39,14 @@ public class RoomUtilsTest {
         }
         
         assert duplicate < 10;
+    }
+
+    @DisplayName("룸 생성시 pk 생성 확인")
+    @Test
+    public void PK생성확인(){
+        Room room = new Room();
+        roomRepository.save(room);
+        
+        assert room.getId() != null;
     }
 }
