@@ -30,7 +30,7 @@ public class RoomUtilsTest {
         int duplicate = 0;
 
         for(int i=0;i<1000000;i++){
-            String code = RoomUtils.createRandomCode(5);
+            String code = RoomUtils.createRandomCode(i);
             if(randomCodes.contains(code)){
                 duplicate++;
                 continue;
