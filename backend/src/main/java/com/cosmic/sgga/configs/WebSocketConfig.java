@@ -34,8 +34,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/sgga-websocket")
             .setAllowedOriginPatterns("*")
-            .addInterceptors(new HttpHandshakeInterceptor())
-            .withSockJS();
+            .addInterceptors(new HttpHandshakeInterceptor());
     }
     
 }
