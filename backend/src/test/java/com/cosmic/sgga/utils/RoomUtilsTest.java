@@ -5,7 +5,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.cosmic.sgga.dtos.RoomDto;
 import com.cosmic.sgga.entities.Room;
+import com.cosmic.sgga.entities.User;
 import com.cosmic.sgga.repositories.RoomRepository;
 
 import java.util.*;
@@ -48,5 +50,22 @@ public class RoomUtilsTest {
         roomRepository.save(room);
         
         assert room.getId() != null;
+    }
+
+    @DisplayName("랜덤 테이블 배정 확인")
+    @Test
+    public void 랜덤테이블_배정_확인(){
+        Room room = new Room();
+        room.setTable4(1);
+        room.setTable6(1);
+        for(int i=0;i<10;i++){
+            User user = new User();
+            user.setName("person"+i);
+            room.addUsers(user);
+        }
+        RoomDto dto = RoomDto.toDTO(room);
+        dto.setTables(RoomUtils.randomSeatting());
+
+        assert dto.getTables().size() == 2;
     }
 }
