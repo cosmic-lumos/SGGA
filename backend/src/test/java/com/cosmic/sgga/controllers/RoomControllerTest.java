@@ -45,7 +45,7 @@ public class RoomControllerTest {
 
     @DisplayName("룸 입장 시 코드 확인 테스트")
     @Test
-    void 룸_찾기_테스트(){
+    void 룸_찾기_테스트() throws Exception{
         RoomMakeDto roomMakeDto = new RoomMakeDto();
         UserDto userDto = new UserDto();
         userDto.setName("william");

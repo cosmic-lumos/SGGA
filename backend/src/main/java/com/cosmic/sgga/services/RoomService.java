@@ -3,7 +3,9 @@ package com.cosmic.sgga.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cosmic.sgga.dtos.RoomDto;
 import com.cosmic.sgga.dtos.RoomMakeDto;
+import com.cosmic.sgga.dtos.UserDto;
 import com.cosmic.sgga.entities.Room;
 import com.cosmic.sgga.entities.User;
 import com.cosmic.sgga.repositories.RoomRepository;
@@ -64,5 +66,20 @@ public class RoomService {
             throw new Exception("No code");
         }
         return roomRepository.findById(RoomUtils.decodeRandomCode(roomCode)).get();
+    }
+
+    /**
+     * room에 새로운 유저를 추가하고 반환
+     * @param room
+     * @param user
+     * @return RoomDto
+     */
+    public RoomDto joinRoom(Room room, UserDto user){
+        User newUser = new User();
+        newUser.setName(user.getName());
+        userRepository.save(newUser);
+        room.addUsers(newUser);
+        roomRepository.save(room);
+        return RoomDto.toDTO(room);
     }
 }
