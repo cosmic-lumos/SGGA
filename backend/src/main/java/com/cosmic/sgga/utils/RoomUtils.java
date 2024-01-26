@@ -1,10 +1,11 @@
 package com.cosmic.sgga.utils;
 
 import java.nio.ByteBuffer;
-import java.util.Base64;
-import java.util.List;
+import java.util.*;
 
 import com.cosmic.sgga.dtos.UserDto;
+import com.cosmic.sgga.entities.Room;
+import com.cosmic.sgga.entities.User;
 
 /**
  * 방을 생성할 때 필요한 유틸들 모음
@@ -29,8 +30,31 @@ public class RoomUtils {
         return ByteBuffer.wrap(decodedBytes).getInt() - SALT;
     }
 
-    public static List<List<UserDto>> randomSeatting() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'randomSeatting'");
+    private static List<UserDto> makeTable(List<User> users, int cur, int size){
+        List<UserDto> table = new ArrayList<>();
+        for(int i=1;i<=size;i++){
+            table.add(UserDto.toDto(users.get(cur-i)));
+        }
+        return table;
+    }
+
+    public static List<List<UserDto>> randomSeatting(Room room) {
+        List<List<UserDto>> tables = new ArrayList<>();
+        int userSize = room.getUsers().size();
+        
+        Collections.shuffle(room.getUsers());
+
+        while(userSize / 6 > 0){
+            tables.add(makeTable(room.getUsers(), userSize, 6));
+            userSize -= 6;
+            continue;
+        }
+        while(userSize / 4 > 0){
+            tables.add(makeTable(room.getUsers(), userSize, 4));
+            userSize -= 4;
+            continue;
+        }
+        tables.add(makeTable(room.getUsers(), userSize, userSize));
+        return tables;
     }
 }
