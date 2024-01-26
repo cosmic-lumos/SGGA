@@ -18,7 +18,7 @@ public class RoomUtils {
     private static final int SALT = 1000000;
     public static String createRandomCode(int pk){
         byte[] bytes = ByteBuffer.allocate(4).putInt(pk+SALT).array();
-        return Base64.getEncoder().encodeToString(bytes);
+        return Base64.getEncoder().withoutPadding().encodeToString(bytes);
     }
 
     public static int decodeRandomCode(String code){
