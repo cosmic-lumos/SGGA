@@ -1,7 +1,6 @@
 package com.cosmic.sgga.utils;
 
-import java.util.Objects;
-
+import java.nio.ByteBuffer;
 import java.util.Base64;
 
 /**
@@ -16,7 +15,14 @@ public class RoomUtils {
      * @param pk
      * @return Base64 인코딩 된 pk
      */
+    private static final int SALT = 1000000;
     public static String createRandomCode(int pk){
-        return Base64.getEncoder().encodeToString(Integer.toString(Objects.hash(pk)).getBytes());
+        byte[] bytes = ByteBuffer.allocate(4).putInt(pk+SALT).array();
+        return Base64.getEncoder().encodeToString(bytes);
+    }
+
+    public static int decodeRandomCode(String code){
+        byte[] decodedBytes = Base64.getDecoder().decode(code);
+        return ByteBuffer.wrap(decodedBytes).getInt() - SALT;
     }
 }
