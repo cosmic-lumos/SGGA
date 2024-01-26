@@ -82,4 +82,13 @@ public class RoomService {
         roomRepository.save(room);
         return RoomDto.toDTO(room);
     }
+
+    public RoomDto changeSeat(Room room, UserDto user) throws Exception {
+        if(!room.getHost().getName().equals(user.getName())){
+            throw new Exception("방장이 아닙니다.");
+        }
+        RoomDto roomDto = RoomDto.toDTO(room);
+        roomDto.setTables(RoomUtils.randomSeatting(room));
+        return roomDto;
+    }
 }
