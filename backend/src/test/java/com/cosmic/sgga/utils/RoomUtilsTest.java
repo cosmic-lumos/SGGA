@@ -5,8 +5,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.cosmic.sgga.controllers.RoomController;
+import com.cosmic.sgga.dtos.RoomDto;
 import com.cosmic.sgga.entities.Room;
+import com.cosmic.sgga.entities.User;
 import com.cosmic.sgga.repositories.RoomRepository;
+
+import jakarta.transaction.Transactional;
 
 import java.util.*;
 
@@ -14,6 +19,9 @@ import java.util.*;
 public class RoomUtilsTest {
     @Autowired
     private RoomRepository roomRepository;
+
+    @Autowired
+    private RoomController roomController;
 
     @DisplayName("코드 인코딩 디코딩 확인")
     @Test
@@ -48,5 +56,27 @@ public class RoomUtilsTest {
         roomRepository.save(room);
         
         assert room.getId() != null;
+    }
+
+    @Transactional
+    @DisplayName("랜덤 테이블 배정 확인")
+    @Test
+    public void 랜덤테이블_배정_확인(){
+        Room room = new Room();
+        User host = new User();
+        host.setName("host");
+        room.setHost(host);
+        room.setTable4(1);
+        room.setTable6(1);
+        for(int i=0;i<10;i++){
+            User user = new User();
+            user.setName("person"+i);
+            room.addUsers(user);
+        }
+        roomRepository.save(room);
+        RoomDto dto = RoomDto.toDTO(room);
+        dto.setTables(RoomUtils.randomSeatting(room));
+
+        assert dto.getTables().size() == 3;
     }
 }

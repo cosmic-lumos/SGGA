@@ -44,4 +44,11 @@ public class RoomController {
     public RoomDto joinUser(@RequestBody UserDto user, @DestinationVariable("roomCode") String roomCode, StompHeaderAccessor stompHeaderAccessor) throws Exception {
         return roomService.joinRoom(roomService.findRoom(roomCode), user);
     }
+
+    @Transactional
+    @MessageMapping("/{roomCode}/randomSeat")
+    @SendTo("/room/{roomCode}")
+    public RoomDto randomSeat(@RequestBody UserDto user, @DestinationVariable("roomCode") String roomCode, StompHeaderAccessor stompHeaderAccessor) throws Exception {
+        return roomService.changeSeat(roomService.findRoom(roomCode), user);
+    }
 }
