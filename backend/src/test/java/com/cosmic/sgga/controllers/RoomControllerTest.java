@@ -5,8 +5,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.cosmic.sgga.dtos.RoomDto;
 import com.cosmic.sgga.dtos.RoomMakeDto;
 import com.cosmic.sgga.dtos.UserDto;
+
+import jakarta.transaction.Transactional;
 
 /**
  * RoomController를 위한 테스트 클래스
@@ -15,6 +18,7 @@ import com.cosmic.sgga.dtos.UserDto;
  * @version 1.0.0
  * @since 1.0.0
  */
+@Transactional
 @SpringBootTest
 public class RoomControllerTest {
     @Autowired
@@ -37,5 +41,22 @@ public class RoomControllerTest {
         roomDto.setTable6(4);
 
         assert roomController.createRoom(roomDto) != null;
+    }
+
+    @DisplayName("룸 입장 시 코드 확인 테스트")
+    @Test
+    void 룸_찾기_테스트() throws Exception{
+        RoomMakeDto roomMakeDto = new RoomMakeDto();
+        UserDto userDto = new UserDto();
+        userDto.setName("william");
+        roomMakeDto.setHost(userDto);
+        roomMakeDto.setTable4(3);
+        roomMakeDto.setTable6(4);
+
+        RoomDto roomDto = roomController.createRoom(roomMakeDto);
+        
+        UserDto joinUserDto = new UserDto();
+        joinUserDto.setName("john");
+        assert roomController.joinUser(joinUserDto, roomDto.getRandomCode(), null) != null;
     }
 }
