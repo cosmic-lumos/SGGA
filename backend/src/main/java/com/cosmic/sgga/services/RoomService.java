@@ -52,4 +52,17 @@ public class RoomService {
 
         return room;
     }
+
+    /**
+     * roomCode를 이용해 room을 찾은 후 반환
+     * @param roomCode
+     * @return
+     * @throws Exception 만약 없을 경우 오류 발생
+     */
+    public Room findRoom(String roomCode) throws Exception{
+        if(roomRepository.findById(RoomUtils.decodeRandomCode(roomCode)).isEmpty()){
+            throw new Exception("No code");
+        }
+        return roomRepository.findById(RoomUtils.decodeRandomCode(roomCode)).get();
+    }
 }

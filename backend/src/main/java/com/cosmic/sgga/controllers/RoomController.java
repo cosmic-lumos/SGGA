@@ -1,6 +1,10 @@
 package com.cosmic.sgga.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cosmic.sgga.dtos.RoomDto;
 import com.cosmic.sgga.dtos.RoomMakeDto;
+import com.cosmic.sgga.dtos.UserDto;
 import com.cosmic.sgga.entities.Room;
 import com.cosmic.sgga.services.RoomService;
 
@@ -35,5 +40,14 @@ public class RoomController {
         return RoomDto.toDTO(newRoom);
     }
     
-
+    @MessageMapping("/{roomCoe}/join")
+    @SendTo("/{roomCode}")
+    public RoomDto joinUser(@RequestBody UserDto user, @DestinationVariable("roomCode") String roomCode, StompHeaderAccessor stompHeaderAccessor){
+        try{
+            Room room = roomService.findRoom(roomCode);
+            return RoomDto.toDTO(room);
+        } catch(Exception e){
+            return null;
+        }
+    }
 }
