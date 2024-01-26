@@ -15,11 +15,11 @@ public class RoomUtilsTest {
     @Autowired
     private RoomRepository roomRepository;
 
-    @DisplayName("랜덤코드 생성길이 테스트")
+    @DisplayName("코드 인코딩 디코딩 확인")
     @Test
-    public void 랜덤코드_생성길이_테스트(){
-        int length = 5;
-        assert RoomUtils.createRandomCode(length).length() == 5;
+    public void 랜덤코드_생성_테스트(){
+        String code = RoomUtils.createRandomCode(5);
+        assert RoomUtils.decodeRandomCode(code) == 5;
     }
 
 
