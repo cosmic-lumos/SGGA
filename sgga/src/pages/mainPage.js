@@ -1,6 +1,5 @@
 import "../styles/mainPage.css";
 import React, { useState, useEffect } from "react";
-import modal from "react-modal";
 import { useNavigate } from "react-router-dom";
 
 const Modal = (props) => {
@@ -46,7 +45,7 @@ const Modal = (props) => {
   );
 };
 
-function mainPage() {
+function MainPage() {
   const [modalIsOpen, setModalIsOpen] = useState(true);
   const navigate = useNavigate();
 
@@ -83,4 +82,4 @@ function mainPage() {
   );
 }
 
-export default mainPage;
+export default MainPage;
