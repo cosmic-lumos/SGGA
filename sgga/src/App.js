@@ -1,8 +1,9 @@
 import "./App.css";
 import MainPage from "./pages/mainPage";
 import CreateRoomPage from "./pages/createRoomPage";
-import { useNavigate } from "react-router-dom";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
+import RoomPage from "./pages/roomPage";
+import RoomInfo from "./pages/roomInfo";
 
 function App() {
   return (
@@ -12,6 +13,9 @@ function App() {
         <Route path="/main" element={<MainPage />} />
         {/* <SignIn /> */}
         <Route path="/createRoom" element={<CreateRoomPage />} />
+        {/* <roomPage /> */}
+        <Route path="/room" element={<RoomPage />} />
+        <Route path="/room/:code" element={<RoomInfo />} />
       </Routes>
     </BrowserRouter>
   );
