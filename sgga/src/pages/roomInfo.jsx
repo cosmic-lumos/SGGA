@@ -18,7 +18,7 @@ const RoomInfo = (props) => {
                     <Spinner animation={spinnerMode} role="status">
                         <span className="visually-hidden">Loading...</span>
                     </Spinner>
-                    <Information code={code} hidden={spinnerMode === "border"}/>
+                    <Information name={props.userName} code={code} hidden={spinnerMode === "border"}/>
                 </Container>
         </StompSessionProvider>
     )
@@ -26,7 +26,7 @@ const RoomInfo = (props) => {
 
 const Information = (props) => {
     const [info, setInfo] = useState(null);
-
+    const [name, setName] = useState(props.name ? props.name : "기본이름");
     const stompClient = useStompClient();
 
     const sendMessage = () => {
@@ -47,7 +47,17 @@ const Information = (props) => {
     });
     return (
         <Row hidden={props.hidden}>
-            {props.code}
+            <Col xs={10}>
+                <h1 style={{height: "100%" }}>
+                    {name}
+                </h1>
+            </Col>
+            <Col xs={2}>
+                <p className="text-end">
+                    입장코드
+                    {props.code}
+                </p>
+            </Col>
             <button onClick={sendMessage}>눌러봐</button>
         </Row>
     )
