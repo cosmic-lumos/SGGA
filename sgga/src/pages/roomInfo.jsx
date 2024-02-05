@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from 'react-router-dom';
 import { StompSessionProvider, useSubscription, useStompClient } from "react-stomp-hooks";
-import { Container, Row, Col, Form, Button, Spinner, Table, ListGroup } from "react-bootstrap";
+import { Container, Row, Col, Button, Spinner, Table, ListGroup } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const RoomInfo = (props) => {
@@ -38,6 +38,15 @@ const Information = (props) => {
         }
     }
 
+    const randomSeat = () => {
+        if (stompClient) {
+            stompClient.publish({
+                destination: `/app/${props.code}/randomSeat`,
+                body: JSON.stringify({"name": "안녕"})
+            })
+        }
+    }
+
     useEffect(() => {
         console.log(info);
     }, [info])
@@ -62,15 +71,18 @@ const Information = (props) => {
                         {props.code}
                     </p>
                 </Col>
-                <button onClick={enterRoom}>눌러봐</button>
+                <Button onClick={enterRoom}>눌러봐</Button>
             </Row>
             <Row>
                 <Col xs={2}>
                     <UserList info={info}></UserList>
                 </Col>
                 <Col xs={10}>
-                    <SeatTable></SeatTable>
+                    <SeatTable info={info}></SeatTable>
                 </Col>
+            </Row>
+            <Row>
+                <Button variant="secondary" onClick={randomSeat}>자리배치</Button>
             </Row>
         </div>
     )
@@ -112,18 +124,49 @@ const SeatTable = (props) => {
     if(props.info == null){
         return;
     }
-    const size = props.size ? props.size : 4;
 
-    const makeSeat = () => {
-        return <tr></tr>
+    const checkName = (name) => {
+        return name != null ? name : ""
+    }
+
+    const range = (start, stop, step) =>
+  Array.from({ length: (stop - start) / step + 1 }, (_, i) => start + i * step);
+
+    const makeRow = (names, start, end) => {
+        return <tr>
+            {range(start, end, 1).map((idx) => {
+                if(names.length <= idx){
+                    return <td key={idx}></td>
+                }
+                return <td key={idx}>{names[idx].name}</td>
+            })}
+        </tr>
+    }
+
+    const makeSeat = (users) => {
+        if(users == null){
+            return;
+        }
+        if(users.length > 4){
+            return <Table>
+                {makeRow(users, 0, 2)}
+                {makeRow(users, 3, 5)}
+            </Table>
+        }
+        return <Table>
+                {makeRow(users, 0, 1)}
+                {makeRow(users, 2, 3)}
+            </Table>
+    }
+
+    if(props.info.tables.length === 0){
+        return "돌려돌려돌림판";
     }
 
     return (
-        <Table responsive>
-            <tbody>
-                {makeSeat()}
-            </tbody>
-        </Table>
+        <div className="text-center">
+            {props.info.tables.map((users) => {return makeSeat(users)})}
+        </div>
     )
 }
 
