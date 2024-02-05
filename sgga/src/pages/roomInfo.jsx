@@ -68,6 +68,9 @@ const Information = (props) => {
                 <Col xs={2}>
                     <UserList info={info}></UserList>
                 </Col>
+                <Col xs={10}>
+                    <SeatTable></SeatTable>
+                </Col>
             </Row>
         </div>
     )
@@ -77,6 +80,14 @@ const UserList = (props) => {
     if (props.info == null) {
         return;
     }
+
+    const hostEmo = (name) => {
+        if(name === props.info.host.name){
+            return "👑";
+        }
+        return "";
+    }
+
     return (
         <ListGroup as="ul">
             {
@@ -86,7 +97,10 @@ const UserList = (props) => {
                             as="li"
                             className="d-flex justify-content-between align-items-start"
                             key={index}>
-                            <div className="fw-bold">{value.name}</div>
+                            <div className="fw-bold">
+                                {hostEmo(value.name)}
+                                {value.name}
+                            </div>
                         </ListGroup.Item>
                     );
                 })}
@@ -95,6 +109,9 @@ const UserList = (props) => {
 }
 
 const SeatTable = (props) => {
+    if(props.info == null){
+        return;
+    }
     const size = props.size ? props.size : 4;
 
     const makeSeat = () => {
