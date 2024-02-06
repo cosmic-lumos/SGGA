@@ -1,83 +1,97 @@
-import "../styles/mainPage.css";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
 
-const Modal = (props) => {
-  const { open, close } = props;
-
-  const [values, setValues] = useState({
-    name: "",
-  });
-
+const Example = (props) => {
   const handleChange = (e) => {
-    setValues({
-      ...values,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(values);
-    close();
+    props.setName(e.target.value);
   };
 
   return (
-    <div>
-      {open ? (
-        <div className="modal">
-          <h4>이름을 입력해 주세요</h4>
-          <form onSubmit={handleSubmit}>
-            <input
-              type="text"
-              name="name"
-              onChange={handleChange}
-              value={values.name}
-            ></input>
-            <div></div>
-            <button type="submit" className="modalSubmitButton">
-              확인
-            </button>
-          </form>
-        </div>
-      ) : null}
-    </div>
+    <Modal
+      {...props}
+      size="lg"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+      style={{ color: "black" }}
+    >
+      <Modal.Header closeButton>
+        <Modal.Title id="contained-modal-title-vcenter">
+          이름을 입력해주세요.
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <input type="text" name="name" onChange={handleChange}></input>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button onClick={props.onHide}>Close</Button>
+      </Modal.Footer>
+    </Modal>
   );
 };
 
 function MainPage() {
-  const [modalIsOpen, setModalIsOpen] = useState(true);
   const navigate = useNavigate();
+
+  const [modalShow, setModalShow] = React.useState(true);
 
   const goToCreateRoom = () => {
     navigate("/createRoom");
   };
 
-  const openModal = () => {
-    setModalIsOpen(true);
-  };
-  const closeModal = () => {
-    setModalIsOpen(false);
-  };
-  console.log(modalIsOpen);
+  const [values, setValues] = useState("");
+
   return (
-    <div className="mainPage">
-      <Modal open={modalIsOpen} close={closeModal} />
-      <div className="title" style={{ color: "white", fontSize: 60 }}>
-        SGGA
-      </div>
-      <div className="buttonSet">
-        <button
-          className="createButton"
-          onClick={goToCreateRoom}
-          style={{ color: "white" }}
-        >
-          방 만들기
-        </button>
-        <button className="enterButton" style={{ color: "white" }}>
-          방 입장하기
-        </button>
-      </div>
+    <div className="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+      <Example
+        setName={setValues}
+        show={modalShow}
+        onHide={() => setModalShow(false)}
+      ></Example>
+      <header className="mb-auto">
+        <div>
+          <h3 className="float-md-center mb-0">{values}</h3>
+          <nav className="nav nav-masthead justify-content-center float-md-end"></nav>
+        </div>
+      </header>
+
+      <main className="px-3">
+        <h1>SGGA</h1>
+        <p className="lead">
+          <a
+            onClick={goToCreateRoom}
+            className="btn btn-lg btn-light fw-bold border-white bg-white"
+            style={{ width: 150 }}
+          >
+            방 만들기
+          </a>
+        </p>
+        <p className="lead">
+          <a
+            href="#"
+            className="btn btn-lg btn-light fw-bold border-white bg-white"
+            style={{ width: 150 }}
+          >
+            방 입장하기
+          </a>
+        </p>
+      </main>
+
+      <footer className="mt-auto text-white-50">
+        <p>
+          Cover template for{" "}
+          <a href="https://getbootstrap.com/" className="text-white">
+            Bootstrap
+          </a>
+          , by{" "}
+          <a href="https://twitter.com/mdo" className="text-white">
+            @mdo
+          </a>
+          .
+        </p>
+      </footer>
     </div>
   );
 }

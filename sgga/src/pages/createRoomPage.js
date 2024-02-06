@@ -1,5 +1,3 @@
-import "../styles/createRoomPage.css";
-
 function CreateRoomPage() {
   return (
     <div className="createRoomPage">
