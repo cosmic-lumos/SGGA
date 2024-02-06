@@ -38,7 +38,7 @@ function MainPage() {
   const [modalShow, setModalShow] = React.useState(true);
 
   const goToCreateRoom = () => {
-    navigate("/createRoom");
+    navigate("/createRoom", { state: { name: values } });
   };
 
   const [values, setValues] = useState("");
