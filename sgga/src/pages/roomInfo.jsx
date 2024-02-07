@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import {
   StompSessionProvider,
   useSubscription,
@@ -17,6 +17,8 @@ import {
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const RoomInfo = (props) => {
+  const location = useLocation();
+  const userInfo = { ...location.state };
   const [spinnerMode, setSpinnerMode] = useState("border");
   const { code } = useParams();
 
@@ -32,7 +34,7 @@ const RoomInfo = (props) => {
           <span className="visually-hidden">Loading...</span>
         </Spinner>
         <Information
-          name={props.userName}
+          name={userInfo.name}
           code={code}
           hidden={spinnerMode === "border"}
         />
@@ -59,7 +61,7 @@ const Information = (props) => {
     if (stompClient) {
       stompClient.publish({
         destination: `/app/${props.code}/randomSeat`,
-        body: JSON.stringify({ name: "안녕" }),
+        body: JSON.stringify({ name: name }),
       });
     }
   };
