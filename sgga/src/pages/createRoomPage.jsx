@@ -3,9 +3,11 @@ import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import SizeStepper from "../component/sizeStepper";
 import useSizeStepper from "../hooks/useSizeStepper";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import sendCreateRoom from "../utils/sendCreateRoom"
 
 function CreateRoomPage() {
+  const navigate = useNavigate();
   const location = useLocation();
   const userInfo = { ...location.state };
 
@@ -17,6 +19,15 @@ function CreateRoomPage() {
     100,
     0
   );
+
+  const requestRoom = async () => {
+    try{
+      const roomInfo = await sendCreateRoom(userInfo.name, sizeTable, sizeTable6);
+      navigate(`/room/${roomInfo.randomCode}`, { state: {...userInfo} });
+    } catch(error){
+      console.log(error);
+    }
+  }
 
   return (
     <Container
@@ -47,6 +58,7 @@ function CreateRoomPage() {
         <a
           className="btn btn-lg btn-light fw-bold border-white bg-white"
           style={{ width: 150 }}
+          onClick={requestRoom}
         >
           확인
         </a>
