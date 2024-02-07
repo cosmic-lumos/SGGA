@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const RoomPage = () => {
+  const location = useLocation();
+  const userInfo = { ...location.state };
   const [validated, setValidated] = useState(false);
   const [code, setCode] = useState("");
   const navigate = useNavigate();
@@ -20,7 +22,7 @@ const RoomPage = () => {
       setValidated(true);
       return;
     }
-    navigate(`/room/${code}`);
+    navigate(`/room/${code}`, {state: {...userInfo}});
   };
 
   return (
