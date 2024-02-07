@@ -41,6 +41,10 @@ function MainPage() {
     navigate("/createRoom", { state: { name: values } });
   };
 
+  const goToJoinRoom = () => {
+    navigate("/room", {state: {name: values}});
+  }
+
   const [values, setValues] = useState("");
 
   return (
@@ -70,7 +74,7 @@ function MainPage() {
         </p>
         <p className="lead">
           <a
-            href="#"
+            onClick={goToJoinRoom}
             className="btn btn-lg btn-light fw-bold border-white bg-white"
             style={{ width: 150 }}
           >
