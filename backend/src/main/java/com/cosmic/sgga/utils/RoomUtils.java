@@ -2,6 +2,7 @@ package com.cosmic.sgga.utils;
 
 import java.nio.ByteBuffer;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import com.cosmic.sgga.dtos.UserDto;
 import com.cosmic.sgga.entities.Room;
@@ -43,22 +44,29 @@ public class RoomUtils {
         int userSize = room.getUsers().size();
         int table4 = room.getTable4();
         int table6 = room.getTable6();
-        
-        Collections.shuffle(room.getUsers());
+        List<User> users = room.getUsers().stream().collect(Collectors.toList());
+
+        while(users.size() < table4 *4 + table6 * 6){
+            User user = new User();
+            user.setName("");
+            users.add(user);
+        }
+
+        Collections.shuffle(users);
 
         while(userSize / 6 > 0 && table6 > 0){
-            tables.add(makeTable(room.getUsers(), userSize, 6));
+            tables.add(makeTable(users, userSize, 6));
             userSize -= 6;
             table6--;
         }
         while(userSize / 4 > 0 && table4 > 0){
-            tables.add(makeTable(room.getUsers(), userSize, 4));
+            tables.add(makeTable(users, userSize, 4));
             userSize -= 4;
             table4--;
             continue;
         }
         if(table4 >0 || table6 > 0){
-            tables.add(makeTable(room.getUsers(), userSize, userSize));
+            tables.add(makeTable(users, userSize, userSize));
         }
         return tables;
     }
