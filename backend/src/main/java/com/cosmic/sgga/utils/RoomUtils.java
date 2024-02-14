@@ -41,20 +41,25 @@ public class RoomUtils {
     public static List<List<UserDto>> randomSeatting(Room room) {
         List<List<UserDto>> tables = new ArrayList<>();
         int userSize = room.getUsers().size();
+        int table4 = room.getTable4();
+        int table6 = room.getTable6();
         
         Collections.shuffle(room.getUsers());
 
-        while(userSize / 6 > 0){
+        while(userSize / 6 > 0 && table6 > 0){
             tables.add(makeTable(room.getUsers(), userSize, 6));
             userSize -= 6;
-            continue;
+            table6--;
         }
-        while(userSize / 4 > 0){
+        while(userSize / 4 > 0 && table4 > 0){
             tables.add(makeTable(room.getUsers(), userSize, 4));
             userSize -= 4;
+            table4--;
             continue;
         }
-        tables.add(makeTable(room.getUsers(), userSize, userSize));
+        if(table4 >0 || table6 > 0){
+            tables.add(makeTable(room.getUsers(), userSize, userSize));
+        }
         return tables;
     }
 }
