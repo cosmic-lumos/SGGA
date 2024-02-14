@@ -47,6 +47,8 @@ public class RoomService {
 
         Room room = new Room();
         room.setHost(host);
+        room.setTable4(roomInfo.getTable4());
+        room.setTable6(roomInfo.getTable6());
         roomRepository.save(room);
         room.setRandomCode(RoomUtils.createRandomCode(room.getId()));
         roomRepository.save(room);
