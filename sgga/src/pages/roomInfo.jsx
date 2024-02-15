@@ -20,24 +20,16 @@ import "../style/roominfo.css";
 const RoomInfo = (props) => {
   const location = useLocation();
   const userInfo = { ...location.state };
-  const [spinnerMode, setSpinnerMode] = useState("border");
   const { code } = useParams();
 
   return (
     <StompSessionProvider
-      onConnect={() => {
-        setSpinnerMode("");
-      }}
       url={"ws://10.255.81.70:8029/sgga-websocket"}
     >
       <Container>
-        <Spinner animation={spinnerMode} role="status">
-          <span className="visually-hidden">Loading...</span>
-        </Spinner>
         <Information
           name={userInfo.name}
           code={code}
-          hidden={spinnerMode === "border"}
         />
       </Container>
     </StompSessionProvider>
@@ -74,6 +66,12 @@ const Information = (props) => {
   useSubscription("/room/" + props.code, (roomDto) => {
     setInfo(JSON.parse(roomDto.body));
   });
+
+  if(!stompClient){
+    return <Spinner animation="border" role="status">
+    <span className="visually-hidden">Loading...</span>
+  </Spinner>
+  }
 
   return (
     <div hidden={props.hidden}>
