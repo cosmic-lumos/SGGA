@@ -78,6 +78,9 @@ public class RoomService {
     public RoomDto joinRoom(Room room, UserDto user){
         User newUser = new User();
         newUser.setName(user.getName());
+        if(room.getUsers().stream().map(roomUser -> roomUser.getName()).anyMatch(name -> name.equals(newUser.getName()))){
+            return RoomDto.toDTO(room);
+        }
         userRepository.save(newUser);
         room.addUsers(newUser);
         roomRepository.save(room);
