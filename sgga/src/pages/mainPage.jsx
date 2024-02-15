@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+import "../style/mainPage.css";
 
 const Example = (props) => {
   const handleChange = (e) => {
@@ -26,7 +27,7 @@ const Example = (props) => {
         <input type="text" name="name" onChange={handleChange}></input>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={props.onHide}>Close</Button>
+        <Button onClick={props.onHide}>확인</Button>
       </Modal.Footer>
     </Modal>
   );
@@ -42,8 +43,8 @@ function MainPage() {
   };
 
   const goToJoinRoom = () => {
-    navigate("/room", {state: {name: values}});
-  }
+    navigate("/room", { state: { name: values } });
+  };
 
   const [values, setValues] = useState("");
 
@@ -54,15 +55,16 @@ function MainPage() {
         show={modalShow}
         onHide={() => setModalShow(false)}
       ></Example>
-      <header className="mb-auto">
+      <header className="h-25 d-flex align-items-center justify-content-center">
         <div>
-          <h3 className="float-md-center mb-0">{values}</h3>
+          <h2 className="float-md-center mb-0">{values}님 반갑습니다.</h2>
           <nav className="nav nav-masthead justify-content-center float-md-end"></nav>
         </div>
       </header>
 
       <main className="px-3">
-        <h1>SGGA</h1>
+        <div className="logoText">SGGA</div>
+        <br></br>
         <p className="lead">
           <a
             onClick={goToCreateRoom}

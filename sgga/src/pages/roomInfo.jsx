@@ -15,6 +15,7 @@ import {
   ListGroup,
 } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "../style/roominfo.css";
 
 const RoomInfo = (props) => {
   const location = useLocation();
@@ -27,7 +28,7 @@ const RoomInfo = (props) => {
       onConnect={() => {
         setSpinnerMode("");
       }}
-      url={"ws://localhost:8080/sgga-websocket"}
+      url={"ws://10.255.81.70:8029/sgga-websocket"}
     >
       <Container>
         <Spinner animation={spinnerMode} role="status">
@@ -154,12 +155,20 @@ const SeatTable = (props) => {
 
   const makeRow = (names, start, end) => {
     return (
-      <tr>
+      <tr className="seatTableTr">
         {range(start, end, 1).map((idx) => {
           if (names.length <= idx) {
-            return <td key={idx}></td>;
+            return (
+              <td className="seatTableTd" key={idx}>
+                {" "}
+              </td>
+            );
           }
-          return <td key={idx}>{names[idx].name}</td>;
+          return (
+            <td className="seatTableTr" key={idx}>
+              {names[idx].name}
+            </td>
+          );
         })}
       </tr>
     );
@@ -178,7 +187,7 @@ const SeatTable = (props) => {
       );
     }
     return (
-      <Table>
+      <Table className="seatTable">
         {makeRow(users, 0, 1)}
         {makeRow(users, 2, 3)}
       </Table>

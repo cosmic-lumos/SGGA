@@ -1,0 +1,12 @@
+.seatTable {
+  border: 1px solid white;
+  border-collapse: collapse;
+}
+
+.seatTableTr {
+  border: 1px solid white;
+}
+
+.seatTableTd {
+  border: 1px solid white;
+}
