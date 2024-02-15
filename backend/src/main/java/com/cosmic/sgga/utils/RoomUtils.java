@@ -41,14 +41,14 @@ public class RoomUtils {
 
     public static List<List<UserDto>> randomSeatting(Room room) {
         List<List<UserDto>> tables = new ArrayList<>();
-        int userSize = room.getUsers().size();
         int table4 = room.getTable4();
         int table6 = room.getTable6();
+        int userSize = table4 *4 + table6 * 6;
         List<User> users = room.getUsers().stream().collect(Collectors.toList());
 
-        while(users.size() < table4 *4 + table6 * 6){
+        while(users.size() < userSize){
             User user = new User();
-            user.setName("");
+            user.setName("🍻");
             users.add(user);
         }
 
